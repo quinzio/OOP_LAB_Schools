@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 // Hint: to write compact stream expressions
 // you can include the following
@@ -134,18 +135,28 @@ public class Region {
 	}
 
 	public Map<String, Long> countSchoolsPerDescription() {
-		return null;
+		return schools.values().stream().collect(Collectors
+				.groupingBy(School::getDescription, Collectors.counting()));
 	}
 
 	public Map<String, Long> countBranchesPerMunicipality() {
-		return null;
+		return branches.values().stream().collect(Collectors.groupingBy(
+				b -> b.getMunicipality().getName(), Collectors.counting()));
 	}
 
 	public Map<String, Double> averageBranchesPerMunicipality() {
+		municipalities.values().stream()
+				.collect(Collectors.groupingBy(Municipality::getProvince,
+						Collectors.mapping(m -> m.getBranches().size(),
+								Collectors.averagingInt(v -> v))));
+
 		return null;
 	}
 
 	public Collection<String> countSchoolsPerMunicipality() {
+		class 
+		
+		branches.values().stream().collect(Collectors.groupingBy(Branch::getMunicipality, Collectors.toList()))
 		return null;
 	}
 

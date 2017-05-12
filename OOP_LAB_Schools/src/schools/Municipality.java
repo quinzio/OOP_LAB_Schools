@@ -25,7 +25,8 @@ public class Municipality {
 	}
 
 	public Collection<Branch> getBranches() {
-		return null;
+		
+		return branches.values();
 	}
 
 	public Optional<Community> getCommunity() {
