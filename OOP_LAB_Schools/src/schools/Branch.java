@@ -1,25 +1,43 @@
 package schools;
 
 public class Branch {
-	
-	public int getCode() {
-		return -1;
-	}
-	
-	public String getAddress() {
-		return null;
-	}
-	
-	public int getCAP() {
-		return -1;
-	}
+    private int code;
+    private Municipality municipality;
+    private String address;
+    private int cap;
+    private School school;
+    private Region region;
 
-	public Municipality getMunicipality(){
-		return null;
-	}
+    public Branch(int code, Municipality municipality, String address, int cap, School school) {
+	this.code = code;
+	this.municipality = municipality;
+	this.address = address;
+	this.cap = cap;
+	this.school = school;
+    }
 
-	public School getSchool(){
-		return null;
-	}
+    public int getCode() {
+	return code;
+    }
+
+    public String getAddress() {
+	return address;
+    }
+
+    public int getCAP() {
+	return cap;
+    }
+
+    public Municipality getMunicipality() {
+	return municipality;
+    }
+
+    public School getSchool() {
+	return school;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
 
 }
