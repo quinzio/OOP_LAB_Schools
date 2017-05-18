@@ -37,6 +37,7 @@ public class Example {
 		
 		r.readData(urlDatiPiemonte);
 		
+		
 		System.out.println("Loaded " + r.getSchools().size() + " schools");
 		
 		System.out.println("Numero scuole per descrizione");
@@ -51,7 +52,7 @@ public class Example {
 		System.out.println("Numero scuole per comune");
 		r.countSchoolsPerMunicipality().forEach( System.out::println);
 
-		System.out.println("Numero scuole per comunità");
+		System.out.println("Numero scuole per comunita'");
 		r.countSchoolsPerCommunity().forEach( System.out::println);
 	}
 

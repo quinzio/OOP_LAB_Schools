@@ -93,13 +93,14 @@ public class Region {
 		School sch = null;
 		Branch b = null;
 		List<String> lines = it.polito.utility.LineUtils.loadLinesUrl(url);
+		lines.remove(0);
 		int nrows = lines.size();
 		int ncols = lines.get(0).split(",").length;
 		System.out
 				.println("Loaded " + nrows + " lines of " + ncols + " columns");
 
 		for (String s : lines) {
-			String[] words = s.split(",");
+			String[] words = s.split(",", 11);
 			if (!words[9].equals(strempty)) {
 				c = new Community(words[9], Community.Type.COLLINARE);
 				if (!this.communities.containsKey(words[9]))
@@ -114,20 +115,21 @@ public class Region {
 				else
 					c = this.communities.get(words[10]);
 			}
-			m = new Municipality(words[1], words[0], Optional.ofNullable(c));
+			
 			if (this.municipalities.containsKey(words[1]))
 				m = this.municipalities.get(words[1]);
 			else
-				this.municipalities.put(words[1], m);
+				m = newMunicipality(words[1], words[0], c);
 
-			sch = new School(words[6], words[5], Integer.valueOf(words[2]),
-					words[3]);
+			String grstr = words[2].split(" - ")[0];
+			int grade = Integer.valueOf(grstr);
+			
 			if (this.schools.containsKey(words[6]))
 				sch = this.schools.get(words[6]);
 			else
-				this.schools.put(words[6], sch);
+				sch = newSchool(words[6], words[5], grade, words[3]);
 
-			b = new Branch(Integer.valueOf(words[4]), m, words[7],
+			b = newBranch(Integer.valueOf(words[4]), m, words[7],
 					Integer.valueOf(words[8]), sch);
 
 		}
@@ -145,23 +147,42 @@ public class Region {
 	}
 
 	public Map<String, Double> averageBranchesPerMunicipality() {
-		municipalities.values().stream()
+		return municipalities.values().stream()
 				.collect(Collectors.groupingBy(Municipality::getProvince,
 						Collectors.mapping(m -> m.getBranches().size(),
 								Collectors.averagingInt(v -> v))));
-
-		return null;
 	}
 
 	public Collection<String> countSchoolsPerMunicipality() {
-		class 
-		
-		branches.values().stream().collect(Collectors.groupingBy(Branch::getMunicipality, Collectors.toList()))
-		return null;
+		return branches.values().stream()
+				.collect(Collectors.groupingBy(Branch::getMunicipality,
+						Collectors.counting()))
+				.entrySet().stream()
+				.map(e -> e.getValue().toString() + " - "
+						+ e.getKey().toString() + "\n")
+				.collect(Collectors.toList());
 	}
 
 	public List<String> countSchoolsPerCommunity() {
-		return null;
+		class CommSch {
+			public School school;
+			public Community community;
+			public CommSch(School school, Community community) {
+				this.school = school;
+				this.community = community;
+			}
+		};
+		return branches.values().stream().map(b -> {
+			return new CommSch(b.getSchool(),
+					b.getMunicipality().getCommunity().get());
+		}).distinct()
+				.collect(Collectors.groupingBy(cs -> cs.community,
+						Collectors.counting()))
+				.entrySet().stream()
+				.map(e -> e.getValue().toString() + " - "
+						+ e.getKey().toString() + "\n")
+				.collect(Collectors.toList());
+
 	}
 
 }

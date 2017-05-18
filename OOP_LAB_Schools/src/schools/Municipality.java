@@ -37,8 +37,6 @@ public class Municipality {
 	}	
 	public void addBranch(Branch branch) {
 	    branches.put(branch.getCode(), branch);
-	    
-	    
 	}
 	
 	
